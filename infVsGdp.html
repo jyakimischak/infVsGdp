@@ -1,0 +1,200 @@
+<html>
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js" integrity="sha256-TQq84xX6vkwR0Qs1qH5ADkP+MvH0W+9E7TdHJsoIQiM=" crossorigin="anonymous"></script>
+    </head>
+
+    <body>
+        <canvas id="theChart"></canvas>
+    </body>
+
+    <script>
+    
+        var lineChartData = {
+            labels: [],
+            datasets: [{
+                label: 'Inflation Rate',
+                borderColor: 'red',
+                backgroundColor: 'red',
+                fill: false,
+                data: [
+                    1.07, // 1961
+                    1.20, // 1962
+                    1.24, // 1963
+                    1.28, // 1964
+                    1.59, // 1965
+                    3.01, // 1966
+                    2.78, // 1967
+                    4.27, // 1968
+                    5.46, // 1969
+                    5.84, // 1970
+                    4.30, // 1971
+                    3.27, // 1972
+                    6.16, // 1973
+                    11.03, // 1974
+                    9.20, // 1975
+                    5.75, // 1976
+                    6.50, // 1977
+                    7.62, // 1978
+                    11.22, // 1979
+                    13.58, // 1980
+                    10.35, // 1981
+                    6.16, // 1982
+                    3.22, // 1983
+                    4.30, // 1984
+                    3.55, // 1985
+                    1.91, // 1986
+                    3.66, // 1987
+                    4.08, // 1988
+                    4.83, // 1989
+                    5.39, // 1990
+                    4.25, // 1991
+                    3.03, // 1992
+                    2.96, // 1993
+                    2.61, // 1994
+                    2.81, // 1995
+                    2.93, // 1996
+                    2.34, // 1997
+                    1.55, // 1998
+                    2.19, // 1999
+                    3.38, // 2000
+                    2.83, // 2001
+                    1.59, // 2002
+                    2.27, // 2003
+                    2.68, // 2004
+                    3.39, // 2005
+                    3.24, // 2006
+                    2.85, // 2007
+                    3.85, // 2008
+                    -0.34, // 2009
+                    1.64, // 2010
+                    3.16, // 2011
+                    2.07, // 2012
+                    1.47, // 2013
+                    1.62, // 2014
+                    0.12, // 2015
+                    1.26, // 2016
+                    2.13, // 2017
+                    2.44, // 2018
+                ],
+                yAxisID: 'y-axis-1',
+            }, {
+                label: 'GDP Growth Rate',
+                borderColor: 'blue',
+                backgroundColor: 'blue',
+                fill: false,
+                data: [
+                    2.3, // 1961
+                    3.8, // 1962
+                    -1.7, // 1963
+                    1.4, // 1964
+                    0.6, // 1965
+                    0.1, // 1966
+                    -4, // 1967
+                    2.3, // 1968
+                    -1.7, // 1969
+                    -3.35, // 1970
+                    3.55, // 1971
+                    1.97, // 1972
+                    0.39, // 1973
+                    -6.19, // 1974
+                    0.34, // 1975
+                    5.59, // 1976
+                    -0.76, // 1977
+                    0.91, // 1978
+                    -2.37, // 1979
+                    -3.42, // 1980
+                    2.79, // 1981
+                    -4.34, // 1982
+                    6.39, // 1983
+                    2.65, // 1984
+                    -3.07, // 1985
+                    -0.71, // 1986
+                    0, // 1987
+                    0.72, // 1988
+                    -0.5, // 1989
+                    -1.79, // 1990
+                    -1.99, // 1991
+                    3.63, // 1992
+                    -0.77, // 1993
+                    1.28, // 1994
+                    -1.34, // 1995
+                    1.09, // 1996
+                    0.67, // 1997
+                    0.03, // 1998
+                    0.27, // 1999
+                    -0.63, // 2000
+                    -3.13, // 2001
+                    0.74, // 2002
+                    1.12, // 2003
+                    0.94, // 2004
+                    -0.29, // 2005
+                    -0.66, // 2006
+                    -0.98, // 2007
+                    -2.01, // 2008
+                    -2.4, // 2009
+                    5.1, // 2010
+                    -1.01, // 2011
+                    0.7, // 2012
+                    -0.41, // 2013
+                    0.61, // 2014
+                    0.43, // 2015
+                    -1.31, // 2016
+                    0.65, // 2017
+                    0.64 // 2018
+                ],
+                yAxisID: 'y-axis-2'
+
+            }, {
+                label: 'Inflation - GDP Growth Rate',
+                borderColor: 'green',
+                backgroundColor: 'green',
+                fill: false,
+                data: [],
+                yAxisID: 'y-axis-2'
+            }]
+        }
+        for(let yearI = 1961; yearI <= 2018; yearI++) {
+            lineChartData.labels.push(yearI)
+        }
+        for(let dataI = 0; dataI < lineChartData.datasets[0].data.length; dataI++) {
+            lineChartData.datasets[2].data.push(lineChartData.datasets[0].data[dataI] - lineChartData.datasets[1].data[dataI])
+        }
+
+        var ctx = document.getElementById('theChart').getContext('2d');
+        let lineChart = Chart.Line(ctx, {
+            data: lineChartData,
+            options: {
+                responsive: true,
+                hoverMode: 'index',
+                stacked: false,
+                title: {
+                    display: true,
+                    text: 'US Inflation vs GDP Growth Rate'
+                },
+                scales: {
+                    yAxes: [{
+                        type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+                        display: true,
+                        position: 'left',
+                        id: 'y-axis-1',
+                    }, {
+                        type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+                        display: true,
+                        position: 'right',
+                        id: 'y-axis-2',
+
+                        // grid line settings
+                        gridLines: {
+                        drawOnChartArea: false, // only want the grid lines for one axis to show up
+                    },
+                    }],
+                }
+            }
+        })
+    
+    </script>
+
+</html>
+
+
+
